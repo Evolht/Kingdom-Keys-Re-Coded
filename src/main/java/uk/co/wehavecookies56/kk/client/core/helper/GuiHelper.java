@@ -13,6 +13,7 @@ import uk.co.wehavecookies56.kk.client.gui.GuiMenu_Items_Player;
 import uk.co.wehavecookies56.kk.client.gui.GuiMenu_Status;
 import uk.co.wehavecookies56.kk.client.gui.GuiTutorial;
 import uk.co.wehavecookies56.kk.common.KingdomKeys;
+import uk.co.wehavecookies56.kk.common.capability.ModCapabilities;
 import uk.co.wehavecookies56.kk.common.lib.GuiIDs;
 import uk.co.wehavecookies56.kk.common.lib.Strings;
 import uk.co.wehavecookies56.kk.common.network.packet.PacketDispatcher;
@@ -65,6 +66,21 @@ public class GuiHelper {
 	}
 
 	public static void openTutorial(int num) {
-		Minecraft.getMinecraft().displayGuiScreen(new GuiTutorial(num));
+		if (Minecraft.getMinecraft().player != null) {
+			if (Minecraft.getMinecraft().player.hasCapability(ModCapabilities.TUTORIALS, null)) {
+				if (!Minecraft.getMinecraft().player.getCapability(ModCapabilities.TUTORIALS, null).getKnownTutorial(num)) {
+					Minecraft.getMinecraft().displayGuiScreen(new GuiTutorial(num));
+				}
+			}
+		}
 	}
+
+	public static void openTutorial(int num, boolean b) {
+		if (b)
+			Minecraft.getMinecraft().displayGuiScreen(new GuiTutorial(num));
+		else{
+			openTutorial(num);
+		}
+	}
+
 }
